@@ -1,0 +1,154 @@
+[gd_scene format=3 uid="uid://dkm6fwrusjg24"]
+
+[ext_resource type="Texture2D" uid="uid://cowbmu7yvecqa" path="res://Assets/bakamon.png" id="1_5i7in"]
+[ext_resource type="Script" uid="uid://cv66d6rrha0qp" path="res://prefabs/bakamon.gd" id="2_wocbu"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_70t85"]
+radius = 8.0
+height = 24.0
+
+[sub_resource type="Animation" id="Animation_wocbu"]
+resource_name = "Idle"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.20148635, 0.4013986),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 2]
+}
+
+[sub_resource type="Animation" id="Animation_r8ibq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_gch7w"]
+resource_name = "duck"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [10]
+}
+
+[sub_resource type="Animation" id="Animation_w5h4o"]
+resource_name = "fall"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [8, 9]
+}
+
+[sub_resource type="Animation" id="Animation_dx4cr"]
+resource_name = "jump"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [7]
+}
+
+[sub_resource type="Animation" id="Animation_1dhh5"]
+resource_name = "run"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.59973675),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [3, 4, 5, 6]
+}
+
+[sub_resource type="Animation" id="Animation_shivj"]
+resource_name = "wallslide"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [11]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gch7w"]
+_data = {
+&"Idle": SubResource("Animation_wocbu"),
+&"RESET": SubResource("Animation_r8ibq"),
+&"duck": SubResource("Animation_gch7w"),
+&"fall": SubResource("Animation_w5h4o"),
+&"jump": SubResource("Animation_dx4cr"),
+&"run": SubResource("Animation_1dhh5"),
+&"wallslide": SubResource("Animation_shivj")
+}
+
+[node name="Bakamon" type="CharacterBody2D" unique_id=20036469]
+script = ExtResource("2_wocbu")
+
+[node name="Standing" type="CollisionShape2D" parent="." unique_id=383681009]
+position = Vector2(0, 3)
+shape = SubResource("CapsuleShape2D_70t85")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2063808293]
+texture = ExtResource("1_5i7in")
+hframes = 12
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=828712719]
+offset = Vector2(50, -20)
+zoom = Vector2(3, 3)
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=293816838]
+libraries/ = SubResource("AnimationLibrary_gch7w")
+autoplay = &"Idle"
