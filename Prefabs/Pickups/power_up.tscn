@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://b3nvj20qrr2id"]
+
+[ext_resource type="Script" uid="uid://cuqs67aec1h1a" path="res://Scripts/power_up.gd" id="1_ketll"]
+[ext_resource type="Texture2D" uid="uid://bhk2a15hc6bnx" path="res://Assets/pickups.png" id="2_t6vt0"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ijvdm"]
+friction = 0.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_iqjy0"]
+radius = 8.0
+height = 20.0
+
+[node name="PowerUp" type="RigidBody2D" unique_id=1061034035]
+physics_material_override = SubResource("PhysicsMaterial_ijvdm")
+lock_rotation = true
+linear_velocity = Vector2(100, 0)
+script = ExtResource("1_ketll")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1440802911]
+texture = ExtResource("2_t6vt0")
+hframes = 9
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1896018397]
+shape = SubResource("CapsuleShape2D_iqjy0")

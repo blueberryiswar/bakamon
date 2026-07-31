@@ -1,14 +1,16 @@
 extends CharacterBody2D
 
+signal died
+
 enum State {STATE_IDLE, STATE_RUN, STATE_JUMP, STATE_FALL, STATE_DUCK, STATE_WALL_SLIDE}
 
 var state : State = State.STATE_IDLE
 
 const ACCEL_RATE = 4.0
 const FRICTION = 600.0
-const AIR_SPEED = 1200.0
-const SLIDE_SPEED = 50.0
-const MAX_SPEED = 500.0
+const AIR_SPEED = 500.0
+const SLIDE_SPEED = 50.0 # Maybe add to duck slide instead of friction
+const MAX_SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 
 const WALL_SLIDE_SPEED = 80.0          # max fall speed while sliding down a wall
@@ -33,6 +35,12 @@ func _physics_process(delta: float) -> void:
 
 	# Get the input direction and handle the movement/deceleration.
 	var direction := Input.get_axis("Left", "Right")
+	
+	if Input.is_action_pressed("Down") and is_on_floor():
+		changeState(State.STATE_DUCK)
+		idle = false
+	elif state == State.STATE_DUCK:
+		changeState(State.STATE_RUN)
 
 	# Wall slide check: airborne, touching a wall (not the floor), and moving toward it
 	var on_wall := is_on_wall_only()
@@ -45,7 +53,7 @@ func _physics_process(delta: float) -> void:
 		idle = false
 
 	if wall_jump_lock <= 0:
-		if direction:
+		if direction and state != State.STATE_DUCK:
 			if is_on_floor():
 				#velocity.x = move_toward(velocity.x, MAX_SPEED * direction, ACCELERATION * delta)
 				velocity.x = lerp(velocity.x, MAX_SPEED * direction, 1.0 - exp(-ACCEL_RATE * delta))
@@ -101,4 +109,5 @@ func changeState(newState : State) -> void:
 		$AnimationPlayer.play("Idle")
 
 func handleDeath() -> void:
+	died.emit()
 	queue_free()

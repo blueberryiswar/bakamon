@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dkm6fwrusjg24"]
 
 [ext_resource type="Texture2D" uid="uid://cowbmu7yvecqa" path="res://Assets/bakamon.png" id="1_5i7in"]
-[ext_resource type="Script" uid="uid://cv66d6rrha0qp" path="res://prefabs/bakamon.gd" id="2_wocbu"]
+[ext_resource type="Script" uid="uid://cv66d6rrha0qp" path="res://Scripts/bakamon.gd" id="1_m2hgu"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_70t85"]
 radius = 8.0
@@ -41,7 +41,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_gch7w"]
 resource_name = "duck"
-length = 0.2
+length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -133,7 +133,9 @@ _data = {
 }
 
 [node name="Bakamon" type="CharacterBody2D" unique_id=20036469]
-script = ExtResource("2_wocbu")
+collision_layer = 7
+collision_mask = 7
+script = ExtResource("1_m2hgu")
 
 [node name="Standing" type="CollisionShape2D" parent="." unique_id=383681009]
 position = Vector2(0, 3)
