@@ -15,7 +15,7 @@ func hit_from_below() -> void:
 	used = true
 	$Sprite2D.frame = 1
 	var powerup = powerupScene.instantiate()
-	get_parent().add_child(powerup)
+	get_parent().add_child.call_deferred(powerup)
 	powerup.global_position = global_position + Vector2(12, -18)
 
 

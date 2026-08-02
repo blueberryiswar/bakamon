@@ -10,7 +10,10 @@ friction = 0.0
 radius = 8.0
 height = 20.0
 
-[node name="PowerUp" type="RigidBody2D" unique_id=1061034035]
+[sub_resource type="CircleShape2D" id="CircleShape2D_iqjy0"]
+radius = 11.0
+
+[node name="DevilFruit" type="RigidBody2D" unique_id=1061034035 groups=["Powerup"]]
 physics_material_override = SubResource("PhysicsMaterial_ijvdm")
 lock_rotation = true
 linear_velocity = Vector2(100, 0)
@@ -22,3 +25,10 @@ hframes = 9
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1896018397]
 shape = SubResource("CapsuleShape2D_iqjy0")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1189666302]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=848352535]
+shape = SubResource("CircleShape2D_iqjy0")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

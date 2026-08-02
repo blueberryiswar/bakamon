@@ -2,9 +2,10 @@
 
 [ext_resource type="Texture2D" uid="uid://cowbmu7yvecqa" path="res://Assets/bakamon.png" id="1_5i7in"]
 [ext_resource type="Script" uid="uid://cv66d6rrha0qp" path="res://Scripts/bakamon.gd" id="1_m2hgu"]
+[ext_resource type="Texture2D" uid="uid://c4gdbdayk4err" path="res://Assets/bakamondevi.png" id="3_2swv4"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_70t85"]
-radius = 8.0
+radius = 7.0
 height = 24.0
 
 [sub_resource type="Animation" id="Animation_wocbu"]
@@ -37,6 +38,38 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_2swv4"]
+resource_name = "dash"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [14]
+}
+
+[sub_resource type="Animation" id="Animation_msltt"]
+resource_name = "doublejump"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.19991225, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [15, 16, 15]
 }
 
 [sub_resource type="Animation" id="Animation_gch7w"]
@@ -88,6 +121,23 @@ tracks/0/keys = {
 "values": [7]
 }
 
+[sub_resource type="Animation" id="Animation_m2hgu"]
+resource_name = "push"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [12, 13]
+}
+
 [sub_resource type="Animation" id="Animation_1dhh5"]
 resource_name = "run"
 length = 0.8
@@ -125,25 +175,40 @@ tracks/0/keys = {
 _data = {
 &"Idle": SubResource("Animation_wocbu"),
 &"RESET": SubResource("Animation_r8ibq"),
+&"dash": SubResource("Animation_2swv4"),
+&"doublejump": SubResource("Animation_msltt"),
 &"duck": SubResource("Animation_gch7w"),
 &"fall": SubResource("Animation_w5h4o"),
 &"jump": SubResource("Animation_dx4cr"),
+&"push": SubResource("Animation_m2hgu"),
 &"run": SubResource("Animation_1dhh5"),
 &"wallslide": SubResource("Animation_shivj")
 }
 
-[node name="Bakamon" type="CharacterBody2D" unique_id=20036469]
+[node name="Bakamon" type="CharacterBody2D" unique_id=20036469 groups=["Player"]]
 collision_layer = 7
 collision_mask = 7
+floor_stop_on_slope = false
+floor_max_angle = 0.8237954
 script = ExtResource("1_m2hgu")
+baseStateTexture = ExtResource("1_5i7in")
+devilStateTexture = ExtResource("3_2swv4")
 
 [node name="Standing" type="CollisionShape2D" parent="." unique_id=383681009]
+visible = false
 position = Vector2(0, 3)
 shape = SubResource("CapsuleShape2D_70t85")
 
+[node name="Ducking" type="CollisionShape2D" parent="." unique_id=1770946999]
+position = Vector2(0, 8)
+scale = Vector2(1, 0.6)
+shape = SubResource("CapsuleShape2D_70t85")
+disabled = true
+
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2063808293]
 texture = ExtResource("1_5i7in")
-hframes = 12
+hframes = 6
+vframes = 3
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=828712719]
 offset = Vector2(50, -20)
