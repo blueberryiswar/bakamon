@@ -203,7 +203,7 @@ _data = {
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_iqjy0"]
-size = Vector2(19, 3.25)
+size = Vector2(12, 3.25)
 
 [node name="Bakamon" type="CharacterBody2D" unique_id=20036469 groups=["Player"]]
 collision_layer = 7

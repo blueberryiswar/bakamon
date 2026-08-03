@@ -170,13 +170,17 @@ func doStomp() -> void:
 	stomp_active = true
 	var tween = create_tween()
 	tween.tween_property($Sprite2D, "rotation", PI, 0.1).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property($Sprite2D, "position", Vector2(0.0,5.0), 0.1)
 	changeState(State.STATE_STOMP)
 	
 func resetStomp() -> void:
 	if !stomp_active:
 		return
 	var tween = create_tween()
-	tween.tween_interval(0.1)
+	tween.tween_property($Sprite2D, "scale", Vector2(1.2,0.8), 0.1)
+	tween.parallel().tween_property($Sprite2D, "position", Vector2(0,10.0),0.1)
+	tween.tween_property($Sprite2D, "scale", Vector2(1.0,1.0), 0.1)
+	tween.parallel().tween_property($Sprite2D, "position", Vector2(0,0.0),0.1)
 	tween.tween_property($Sprite2D, "rotation", 0.0, 0.05)
 	tween.tween_callback(func(): stomp_active = false)
 
