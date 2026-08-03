@@ -15,6 +15,7 @@ const AIR_SPEED = 500.0
 const SLIDE_SPEED = 50.0 # Maybe add to duck slide instead of friction
 const MAX_SPEED = 300.0
 const JUMP_VELOCITY = -400.0
+const STOMP_VELOCITY = 500
 
 const WALL_SLIDE_SPEED = 80.0          # max fall speed while sliding down a wall
 const WALL_JUMP_VELOCITY_Y = -300.0     # vertical kick off the wall
@@ -85,7 +86,8 @@ func _physics_process(delta: float) -> void:
 		if is_on_floor():
 			resetStomp()
 		else:
-			velocity.y = JUMP_VELOCITY * -1
+			velocity = Vector2(0.0, STOMP_VELOCITY)
+			
 		idle = false
 
 	# Handle jump.
@@ -177,10 +179,10 @@ func resetStomp() -> void:
 	if !stomp_active:
 		return
 	var tween = create_tween()
-	tween.tween_property($Sprite2D, "scale", Vector2(1.2,0.8), 0.1)
-	tween.parallel().tween_property($Sprite2D, "position", Vector2(0,10.0),0.1)
-	tween.tween_property($Sprite2D, "scale", Vector2(1.0,1.0), 0.1)
-	tween.parallel().tween_property($Sprite2D, "position", Vector2(0,0.0),0.1)
+	tween.tween_property($Sprite2D, "scale", Vector2(1.2,0.8), 0.05)
+	tween.parallel().tween_property($Sprite2D, "position", Vector2(0,10.0),0.05)
+	tween.tween_property($Sprite2D, "scale", Vector2(1.0,1.0), 0.05)
+	tween.parallel().tween_property($Sprite2D, "position", Vector2(0,0.0),0.05)
 	tween.tween_property($Sprite2D, "rotation", 0.0, 0.05)
 	tween.tween_callback(func(): stomp_active = false)
 
