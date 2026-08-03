@@ -8,7 +8,7 @@ friction = 0.1
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a6hcy"]
 size = Vector2(24, 24)
 
-[node name="Crate" type="RigidBody2D" unique_id=1332350139]
+[node name="Crate" type="RigidBody2D" unique_id=1332350139 groups=["Movable"]]
 mass = 5.0
 physics_material_override = SubResource("PhysicsMaterial_iqjy0")
 

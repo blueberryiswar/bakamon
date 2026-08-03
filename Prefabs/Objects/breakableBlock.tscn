@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://c80fvrusd6eag"]
+
+[ext_resource type="Script" uid="uid://dxlrc704vsv50" path="res://Scripts/answer_block.gd" id="1_gvf0k"]
+[ext_resource type="Texture2D" uid="uid://c275pbia0mupd" path="res://Assets/interactables.png" id="2_fo07b"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_iqjy0"]
+size = Vector2(24, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gvf0k"]
+size = Vector2(18, 3)
+
+[node name="BreakableBlock" type="StaticBody2D" unique_id=1006431809]
+script = ExtResource("1_gvf0k")
+blockType = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=536273061]
+texture = ExtResource("2_fo07b")
+offset = Vector2(12, 12)
+hframes = 4
+vframes = 3
+frame = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=820154933]
+position = Vector2(12, 12)
+shape = SubResource("RectangleShape2D_iqjy0")
+
+[node name="BottomDetector" type="Area2D" parent="." unique_id=1014448033]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomDetector" unique_id=661634795]
+position = Vector2(12, 26)
+shape = SubResource("RectangleShape2D_gvf0k")
+
+[connection signal="body_entered" from="BottomDetector" to="." method="_on_bottom_detector_body_entered"]

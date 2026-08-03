@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 signal died
 
-enum State {STATE_IDLE, STATE_RUN, STATE_JUMP, STATE_FALL, STATE_DUCK, STATE_WALL_SLIDE, STATE_PUSH, STATE_DOUBLEJUMP}
+enum State {STATE_IDLE, STATE_RUN, STATE_JUMP, STATE_FALL, STATE_DUCK, STATE_WALL_SLIDE, STATE_PUSH, STATE_DOUBLEJUMP, STATE_STOMP}
 
 var state : State = State.STATE_IDLE
 
@@ -26,6 +26,7 @@ var wall_jump_lock := 0.0
 var needs_reset : bool = false
 var devil_state : bool = false
 var jump_lock : bool = false
+var stomp_active : bool = false
 
 func _physics_process(delta: float) -> void:
 	var idle = true
@@ -45,11 +46,13 @@ func _physics_process(delta: float) -> void:
 	# Get the input direction and handle the movement/deceleration.
 	var direction := Input.get_axis("Left", "Right")
 	
-	if Input.is_action_pressed("Down") and is_on_floor():
+	if Input.is_action_pressed("Down") and is_on_floor() and !stomp_active:
 		changeState(State.STATE_DUCK)
 		idle = false
-	elif state == State.STATE_DUCK:
+	elif state == State.STATE_DUCK and !stomp_active:
 		changeState(State.STATE_RUN)
+	elif Input.is_action_just_pressed("Down") and !stomp_active:
+		doStomp()
 
 	# Wall slide check: airborne, touching a wall (not the floor), and moving toward it
 	var on_wall := is_on_wall_only()
@@ -61,7 +64,7 @@ func _physics_process(delta: float) -> void:
 		changeState(State.STATE_WALL_SLIDE)
 		idle = false
 
-	if wall_jump_lock <= 0:
+	if wall_jump_lock <= 0 and !stomp_active:
 		if direction and state != State.STATE_DUCK:
 			if is_on_floor():
 				#velocity.x = move_toward(velocity.x, MAX_SPEED * direction, ACCELERATION * delta)
@@ -77,9 +80,16 @@ func _physics_process(delta: float) -> void:
 
 		else:
 			velocity.x = move_toward(velocity.x, 0, FRICTION * delta)
+			
+	if stomp_active:
+		if is_on_floor():
+			resetStomp()
+		else:
+			velocity.y = JUMP_VELOCITY * -1
+		idle = false
 
 	# Handle jump.
-	if Input.is_action_just_pressed("Jump"):
+	if Input.is_action_just_pressed("Jump") and !stomp_active:
 		if is_on_floor():
 			velocity.y = JUMP_VELOCITY
 			changeState(State.STATE_JUMP)
@@ -104,7 +114,7 @@ func _physics_process(delta: float) -> void:
 	for i in get_slide_collision_count():
 		var collision := get_slide_collision(i)
 		var collider = collision.get_collider()
-		if collider is RigidBody2D:
+		if collider is RigidBody2D and collider.is_in_group("Movable"):
 			var push_direction = -collision.get_normal()
 			collider.apply_central_force(push_direction * PUSH_FORCE)
 			if push_direction.y == 0:
@@ -136,6 +146,8 @@ func changeState(newState : State) -> void:
 		$AnimationPlayer.play("push")
 	elif state == State.STATE_DOUBLEJUMP:
 		$AnimationPlayer.play("doublejump")
+	elif state == State.STATE_STOMP:
+		$AnimationPlayer.play("stomp")
 	else:
 		$AnimationPlayer.play("Idle")
 		
@@ -151,12 +163,38 @@ func resetState() -> void:
 	$Sprite2D.set_deferred("rotation", 0.0)
 	$Standing.set_deferred("rotation", 0.0)
 	needs_reset = false
+	
+func doStomp() -> void:
+	if stomp_active:
+		return
+	stomp_active = true
+	var tween = create_tween()
+	tween.tween_property($Sprite2D, "rotation", PI, 0.1).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	changeState(State.STATE_STOMP)
+	
+func resetStomp() -> void:
+	if !stomp_active:
+		return
+	var tween = create_tween()
+	tween.tween_interval(0.1)
+	tween.tween_property($Sprite2D, "rotation", 0.0, 0.05)
+	tween.tween_callback(func(): stomp_active = false)
 
 func eatPowerup(type) -> void:
+	var tween = create_tween()
+	tween.tween_property($Sprite2D, "scale", Vector2(1.2,1.2), 0.1)
 	if type == 0:
 		$Sprite2D.texture = devilStateTexture
-	devil_state = true
+		devil_state = true
+	tween.tween_property($Sprite2D, "scale", Vector2(1.0,1.0), 0.1)
 
 func handleDeath() -> void:
 	died.emit()
 	queue_free()
+
+
+func _on_stomp_body_entered(body: Node2D) -> void:
+	if !stomp_active:
+		return
+	if body.has_method("handleStomp"):
+		body.handleStomp()

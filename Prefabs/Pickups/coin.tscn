@@ -49,7 +49,7 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_iqjy0"]
 radius = 11.0
 
-[node name="Coin" type="Area2D" unique_id=433160790]
+[node name="Coin" type="Area2D" unique_id=433160790 groups=["Coin"]]
 collision_layer = 4
 collision_mask = 4
 script = ExtResource("1_8i2d1")

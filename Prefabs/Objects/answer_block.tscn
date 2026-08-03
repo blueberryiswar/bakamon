@@ -13,7 +13,7 @@ size = Vector2(24, 24)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a6hcy"]
 size = Vector2(18, 3)
 
-[node name="StaticBody2D" type="StaticBody2D" unique_id=1726221619]
+[node name="AnswerBlock" type="StaticBody2D" unique_id=1726221619]
 physics_material_override = SubResource("PhysicsMaterial_g1ylq")
 script = ExtResource("1_rgesn")
 

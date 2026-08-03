@@ -27,5 +27,7 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body is CharacterBody2D and body.is_in_group("Player"):
+		var tween = create_tween()
+		tween.tween_property($Sprite2D, "scale", Vector2(0.5,0.5), 0.2)
 		body.eatPowerup(powerUpType)
 		queue_free()

@@ -9,8 +9,11 @@
 [ext_resource type="PackedScene" uid="uid://dwcsh5ytj5m11" path="res://Prefabs/Pickups/coin.tscn" id="6_1ainy"]
 [ext_resource type="PackedScene" uid="uid://dwgj7fqol06yb" path="res://Prefabs/Objects/crate.tscn" id="8_km5ld"]
 [ext_resource type="Texture2D" uid="uid://iqpmdhol58m7" path="res://Assets/background.png" id="9_i2t4f"]
+[ext_resource type="PackedScene" uid="uid://c80fvrusd6eag" path="res://Prefabs/Objects/breakableBlock.tscn" id="10_2orkt"]
+[ext_resource type="PackedScene" uid="uid://crtfijoylk8ij" path="res://Prefabs/Objects/block.tscn" id="11_aicyk"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1ainy"]
+resource_name = "Greenhills"
 texture = ExtResource("4_0b4ue")
 texture_region_size = Vector2i(24, 24)
 0:0/0 = 0
@@ -90,5 +93,11 @@ position = Vector2(-168, -144)
 
 [node name="Coin3" parent="." unique_id=399028118 instance=ExtResource("6_1ainy")]
 position = Vector2(-216, -144)
+
+[node name="BreakableBlock" parent="." unique_id=1006431809 instance=ExtResource("10_2orkt")]
+position = Vector2(-120, -144)
+
+[node name="Block" parent="." unique_id=1059897667 instance=ExtResource("11_aicyk")]
+position = Vector2(-96, -144)
 
 [editable path="DeathZone"]

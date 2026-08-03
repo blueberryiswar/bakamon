@@ -27,6 +27,9 @@ window/stretch/scale_mode="integer"
 
 Player=""
 Powerup=""
+Movable=""
+Coin=""
+Block=""
 
 [input]
 
